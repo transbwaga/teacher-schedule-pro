@@ -4,39 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teacher Schedule Pro</title>
-
-    <!-- Styles -->
     <link rel="stylesheet" href="./style.css">
-
-    <!-- PWA -->
     <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#3498db">
-
-    <!-- Icons -->
     <link rel="icon" href="./icon-192.png">
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-
 <body>
 <div class="container">
-
-    <!-- Header -->
     <header>
         <h1><i class="fas fa-chalkboard-teacher"></i> Teacher Schedule Pro</h1>
         <div class="date-display" id="currentDate">Loading...</div>
     </header>
 
-    <!-- View Toggle -->
     <div class="view-toggle">
         <div class="view-option active" data-view="today">Today</div>
         <div class="view-option" data-view="week">Week</div>
         <div class="view-option" data-view="all">All Classes</div>
     </div>
 
-    <!-- Quick Stats -->
     <div class="stats-bar">
         <div class="stat-item">
             <span class="stat-number" id="todayCount">0</span>
@@ -56,35 +42,24 @@
         </div>
     </div>
 
-    <!-- Quick Actions -->
     <div class="quick-actions">
         <button class="btn primary" id="addClass">
             <i class="fas fa-plus"></i> Add Class
         </button>
-        <button class="btn secondary" id="addMeeting">
-            <i class="fas fa-users"></i> Add Meeting
-        </button>
         <button class="btn tertiary" onclick="toggleSettings()">
             <i class="fas fa-cog"></i> Settings
         </button>
+        <button class="btn secondary" onclick="window.printSchedule()">
+            <i class="fas fa-print"></i> Print
+        </button>
     </div>
 
-    <!-- Schedule -->
     <section>
-        <h2><i class="fas fa-calendar-day"></i> Schedule</h2>
         <div id="scheduleList"></div>
     </section>
 
-    <!-- Bell Schedule -->
-    <div class="bell-schedule" id="bellSchedule" style="display:none;">
-        <h3><i class="fas fa-bell"></i> Bell Schedule</h3>
-        <div id="bellList"></div>
-    </div>
-
-    <!-- Settings -->
     <div class="settings-panel" id="settingsPanel">
         <h3><i class="fas fa-sliders-h"></i> Settings</h3>
-
         <div class="setting-item">
             <span>Enable Notifications</span>
             <label class="switch">
@@ -92,66 +67,37 @@
                 <span class="slider"></span>
             </label>
         </div>
-
-        <div class="setting-item">
-            <span>Reminder Time</span>
-            <select id="reminderTime">
-                <option value="5">5 min</option>
-                <option value="10" selected>10 min</option>
-                <option value="15">15 min</option>
-                <option value="30">30 min</option>
-            </select>
-        </div>
-
         <button class="btn primary" onclick="saveSettings()" style="width:100%;">
             <i class="fas fa-save"></i> Save
         </button>
     </div>
-
 </div>
 
-<!-- Bottom Navigation -->
-<nav class="bottom-nav">
-    <a href="#" class="nav-item active">
-        <i class="fas fa-home"></i> Home
-    </a>
-    <a href="#" class="nav-item">
-        <i class="fas fa-calendar-alt"></i> Calendar
-    </a>
-    <a href="#" class="nav-item">
-        <i class="fas fa-cog"></i> Settings
-    </a>
-</nav>
-
-<!-- Add Class Modal -->
 <div class="modal" id="classModal">
     <div class="modal-content">
-        <h3>Add Class</h3>
+        <h3>Add Class to Schedule</h3>
         <form id="classForm">
-            <input type="text" placeholder="Subject" required>
-            <input type="text" placeholder="Grade/Class">
-            <input type="text" placeholder="Room">
-            <input type="time" required>
-            <input type="number" placeholder="Duration (min)" value="45">
-            <button type="submit" class="btn primary">Save</button>
+            <input type="text" id="subjectInput" placeholder="Subject (e.g. Math)" required>
+            <input type="text" id="gradeInput" placeholder="Grade/Class (e.g. 10A)">
+            <input type="text" id="roomInput" placeholder="Room Number">
+            <input type="time" id="timeInput" required>
+            <input type="number" id="durationInput" placeholder="Duration (min)" value="45">
+            
+            <p style="margin: 10px 0 5px; font-weight: bold; font-size: 0.9rem;">Repeat on:</p>
+            <div class="day-selector" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px;">
+                <label><input type="checkbox" name="days" value="1"> Mon</label>
+                <label><input type="checkbox" name="days" value="2"> Tue</label>
+                <label><input type="checkbox" name="days" value="3"> Wed</label>
+                <label><input type="checkbox" name="days" value="4"> Thu</label>
+                <label><input type="checkbox" name="days" value="5"> Fri</label>
+            </div>
+
+            <button type="submit" class="btn primary">Save Class</button>
             <button type="button" class="btn secondary" id="cancelBtn">Cancel</button>
         </form>
     </div>
 </div>
 
-<!-- App Script -->
 <script src="./app.js"></script>
-
-<!-- Service Worker -->
-<script>
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./service-worker.js')
-            .then(() => console.log('Service Worker registered'))
-            .catch(err => console.error('SW error:', err));
-    });
-}
-</script>
-
 </body>
 </html>
